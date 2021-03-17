@@ -3,6 +3,7 @@ package com.pooii.ac1.controllers;
 import java.net.URI;
 import java.util.List;
 
+import com.pooii.ac1.dto.EventDTO;
 import com.pooii.ac1.entities.Event;
 import com.pooii.ac1.services.EventService;
 
@@ -45,9 +46,9 @@ public class EventController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Event> update(@PathVariable Long id, @RequestBody Event event){
-        Event e = service.update(id, event);
-        return ResponseEntity.ok().body(e);
+    public ResponseEntity<EventDTO> update(@PathVariable Long id, @RequestBody EventDTO eventDTO){
+        EventDTO dto = service.update(id, eventDTO);
+        return ResponseEntity.ok().body(dto);
     }
 
     @DeleteMapping("{id}")

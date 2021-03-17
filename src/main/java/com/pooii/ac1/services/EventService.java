@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.pooii.ac1.dto.EventDTO;
 import com.pooii.ac1.entities.Event;
 import com.pooii.ac1.repositories.EventRepository;
 
@@ -40,20 +41,17 @@ public class EventService {
         return event;
     }
 
-    public Event update(Long id, Event event) {
+    public EventDTO update(Long id, EventDTO event) {
         try{
             Event entity = repository.getOne(id);
-            entity.setName(event.getName());
-            entity.setDescription(event.getDescription());
             entity.setPlace(event.getPlace());
             entity.setStartDate(event.getStartDate());
             entity.setEndDate(event.getEndDate());
             entity.setStartTime(event.getStartTime());
             entity.setEndTime(event.getEndTime());
-            entity.setEmailContact(event.getEmailContact());
 
             entity = repository.save(entity);
-            return entity;
+            return new EventDTO(entity);
         }
         catch(EntityNotFoundException excep){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
