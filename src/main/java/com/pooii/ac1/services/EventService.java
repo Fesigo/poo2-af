@@ -3,6 +3,8 @@ package com.pooii.ac1.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import com.pooii.ac1.entities.Event;
 import com.pooii.ac1.repositories.EventRepository;
 
@@ -38,6 +40,26 @@ public class EventService {
         return event;
     }
 
+    public Event update(Long id, Event event) {
+        try{
+            Event entity = repository.getOne(id);
+            entity.setName(event.getName());
+            entity.setDescription(event.getDescription());
+            entity.setPlace(event.getPlace());
+            entity.setStartDate(event.getStartDate());
+            entity.setEndDate(event.getEndDate());
+            entity.setStartTime(event.getStartTime());
+            entity.setEndTime(event.getEndTime());
+            entity.setEmailContact(event.getEmailContact());
+
+            entity = repository.save(entity);
+            return entity;
+        }
+        catch(EntityNotFoundException excep){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
+        }
+    }
+
     public void delete(Long id) {
         try{
             repository.deleteById(id);
@@ -46,6 +68,4 @@ public class EventService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
         }
     }
-
-    
 }

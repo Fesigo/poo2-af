@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +31,7 @@ public class EventController {
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<Event> getEventById(@PathVariable Long id){
         Event event = service.getEventById(id);
         return ResponseEntity.ok(event);
@@ -43,10 +44,15 @@ public class EventController {
         return ResponseEntity.created(uri).body(e);
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("{id}")
+    public ResponseEntity<Event> update(@PathVariable Long id, @RequestBody Event event){
+        Event e = service.update(id, event);
+        return ResponseEntity.ok().body(e);
+    }
+
+    @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
-    
 }
