@@ -2,6 +2,7 @@ package com.pooii.ac1.controllers;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.validation.Valid;
 
@@ -42,13 +43,16 @@ public class EventController {
         @RequestParam(value = "name", defaultValue = "") String name,
         @RequestParam(value = "place", defaultValue = "") String place,
         @RequestParam(value = "description", defaultValue = "") String description,
-        @RequestParam(value = "startDate", defaultValue = "01/01/1900") LocalDate startDate
+        @RequestParam(value = "startDate", defaultValue = "01/01/1900") String startDate
 
     ){
 
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),orderBy);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate date = LocalDate.parse(startDate, formatter);
         
-        Page<Event> list = service.getEvents(pageRequest, name, place, description, startDate);
+        Page<Event> list = service.getEvents(pageRequest, name, place, description, date);
         return ResponseEntity.ok(list);
     }
 
