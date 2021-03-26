@@ -1,5 +1,6 @@
 package com.pooii.ac1.services;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -22,8 +23,8 @@ public class EventService {
     @Autowired
     private EventRepository repository;
 
-    public Page<Event> getEvents(PageRequest pageRequest, String name, String place, String description){
-        Page<Event> list = repository.find(pageRequest, name, place, description);
+    public Page<Event> getEvents(PageRequest pageRequest, String name, String place, String description, LocalDate startDate){
+        Page<Event> list = repository.find(pageRequest, name, place, description, startDate);
 
         return list;
     }
@@ -37,6 +38,21 @@ public class EventService {
     
     public Event insert(Event e){
         Event event = new Event();
+        
+        Optional<Event> op;
+
+        if(e.getStartDate().isAfter(e.getEndDate())){
+            op = Optional.empty();
+            return op.orElseThrow( () -> new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "Data inválida! A data de início deve ser antes da data de fim!"));
+        }
+
+        if(e.getStartDate().equals(e.getEndDate())){
+            if(e.getStartTime().isAfter(e.getEndTime())){
+                op = Optional.empty();
+            return op.orElseThrow( () -> new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "Horário inválido! O horário de início deve ser antes do horário de fim!"));
+            }
+        }
+
         event = repository.save(e);
 
         return event;
