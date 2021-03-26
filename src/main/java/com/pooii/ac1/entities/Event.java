@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -21,8 +22,14 @@ public class Event implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @NotBlank(message = "Nome do evento é obrigatório!")
     private String name;
+
+    @NotBlank(message = "Descrição do evento é obrigatória!")
     private String description;
+    
+    @NotBlank(message = "Lugar do evento é obrigatório!")
     private String place;
 
     @JsonFormat(pattern = "dd/MM/yyyy")

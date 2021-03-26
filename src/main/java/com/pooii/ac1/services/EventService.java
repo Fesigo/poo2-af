@@ -38,18 +38,14 @@ public class EventService {
     
     public Event insert(Event e){
         Event event = new Event();
-        
-        Optional<Event> op;
 
         if(e.getStartDate().isAfter(e.getEndDate())){
-            op = Optional.empty();
-            return op.orElseThrow( () -> new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "Data inválida! A data de início deve ser antes da data de fim!"));
+            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "Data inválida! A data de início deve ser antes da data de fim!");
         }
 
         if(e.getStartDate().equals(e.getEndDate())){
             if(e.getStartTime().isAfter(e.getEndTime())){
-                op = Optional.empty();
-            return op.orElseThrow( () -> new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "Horário inválido! O horário de início deve ser antes do horário de fim!"));
+                throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "Horário inválido! O horário de início deve ser antes do horário de fim!");
             }
         }
 
