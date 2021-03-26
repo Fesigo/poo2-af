@@ -1,6 +1,5 @@
 package com.pooii.ac1.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -23,8 +22,8 @@ public class EventService {
     @Autowired
     private EventRepository repository;
 
-    public Page<Event> getEvents(PageRequest pageRequest){
-        Page<Event> list = repository.find(pageRequest);
+    public Page<Event> getEvents(PageRequest pageRequest, String name, String place, String description){
+        Page<Event> list = repository.find(pageRequest, name, place, description);
 
         return list;
     }

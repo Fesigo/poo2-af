@@ -1,8 +1,6 @@
 package com.pooii.ac1.controllers;
 
 import java.net.URI;
-import java.util.List;
-
 import com.pooii.ac1.dto.EventDTO;
 import com.pooii.ac1.entities.Event;
 import com.pooii.ac1.services.EventService;
@@ -36,13 +34,17 @@ public class EventController {
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "linesPerPage", defaultValue = "6") Integer linesPerPage,
         @RequestParam(value = "direction", defaultValue = "ASC") String direction,
-        @RequestParam(value = "orderBy", defaultValue = "id") String orderBy
+        @RequestParam(value = "orderBy", defaultValue = "id") String orderBy,
+        @RequestParam(value = "name", defaultValue = "") String name,
+        @RequestParam(value = "place", defaultValue = "") String place,
+        @RequestParam(value = "description", defaultValue = "") String description
+        //@RequestParam(value = "startDate", defaultValue = "") LocalDate startDate
 
     ){
 
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),orderBy);
 
-        Page<Event> list = service.getEvents(pageRequest);
+        Page<Event> list = service.getEvents(pageRequest, name, place, description);
         return ResponseEntity.ok(list);
     }
 
