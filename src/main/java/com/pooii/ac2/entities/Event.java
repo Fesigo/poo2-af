@@ -1,13 +1,16 @@
-package com.pooii.ac1.entities;
+package com.pooii.ac2.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
@@ -16,8 +19,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
 @Table(name = "TB_EVENT")
 public class Event implements Serializable{
-
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +30,9 @@ public class Event implements Serializable{
     @NotBlank(message = "Descrição do evento é obrigatória!")
     private String description;
     
-    @NotBlank(message = "Lugar do evento é obrigatório!")
-    private String place;
+    //@NotBlank(message = "Lugar do evento é obrigatório!")
+    @ManyToMany
+    private List<Place> places = new ArrayList<>();
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate startDate;
@@ -71,12 +73,12 @@ public class Event implements Serializable{
         this.description = description;
     }
 
-    public String getPlace() {
-        return place;
+    public List<Place> getPlaces() {
+        return places;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public void addPlace(Place place) {
+        this.places.add(place);
     }
 
     public LocalDate getStartDate() {

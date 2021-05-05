@@ -1,4 +1,4 @@
-package com.pooii.ac1.controllers;
+package com.pooii.ac2.controllers;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -6,9 +6,9 @@ import java.time.format.DateTimeFormatter;
 
 import javax.validation.Valid;
 
-import com.pooii.ac1.dto.EventDTO;
-import com.pooii.ac1.entities.Event;
-import com.pooii.ac1.services.EventService;
+import com.pooii.ac2.dto.EventDTO;
+import com.pooii.ac2.entities.Event;
+import com.pooii.ac2.services.EventService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,7 +41,7 @@ public class EventController {
         @RequestParam(value = "direction", defaultValue = "ASC") String direction,
         @RequestParam(value = "orderBy", defaultValue = "id") String orderBy,
         @RequestParam(value = "name", defaultValue = "") String name,
-        @RequestParam(value = "place", defaultValue = "") String place,
+        //@RequestParam(value = "place", defaultValue = "") String place,
         @RequestParam(value = "description", defaultValue = "") String description,
         @RequestParam(value = "startDate", defaultValue = "01/01/1900") String startDate
 
@@ -52,7 +52,7 @@ public class EventController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate date = LocalDate.parse(startDate, formatter);
         
-        Page<Event> list = service.getEvents(pageRequest, name, place, description, date);
+        Page<Event> list = service.getEvents(pageRequest, name, description, date);
         return ResponseEntity.ok(list);
     }
 
@@ -69,11 +69,12 @@ public class EventController {
         return ResponseEntity.created(uri).body(e);
     }
 
+    /*
     @PutMapping("{id}")
     public ResponseEntity<EventDTO> update(@PathVariable Long id, @RequestBody @Valid EventDTO eventDTO){
         EventDTO dto = service.update(id, eventDTO);
         return ResponseEntity.ok().body(dto);
-    }
+    }*/
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){

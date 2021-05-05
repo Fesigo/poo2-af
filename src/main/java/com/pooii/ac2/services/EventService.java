@@ -1,13 +1,13 @@
-package com.pooii.ac1.services;
+package com.pooii.ac2.services;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
-import com.pooii.ac1.dto.EventDTO;
-import com.pooii.ac1.entities.Event;
-import com.pooii.ac1.repositories.EventRepository;
+import com.pooii.ac2.dto.EventDTO;
+import com.pooii.ac2.entities.Event;
+import com.pooii.ac2.repositories.EventRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -23,8 +23,8 @@ public class EventService {
     @Autowired
     private EventRepository repository;
 
-    public Page<Event> getEvents(PageRequest pageRequest, String name, String place, String description, LocalDate startDate){
-        Page<Event> list = repository.find(pageRequest, name, place, description, startDate);
+    public Page<Event> getEvents(PageRequest pageRequest, String name, String description, LocalDate startDate){
+        Page<Event> list = repository.find(pageRequest, name, description, startDate);
 
         return list;
     }
@@ -54,10 +54,11 @@ public class EventService {
         return event;
     }
 
+    /*
     public EventDTO update(Long id, EventDTO event) {
         try{
             Event entity = repository.getOne(id);
-            entity.setPlace(event.getPlace());
+            entity.addPlace(event.getPlaces());
             entity.setStartDate(event.getStartDate());
             entity.setEndDate(event.getEndDate());
             entity.setStartTime(event.getStartTime());
@@ -69,7 +70,7 @@ public class EventService {
         catch(EntityNotFoundException excep){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
         }
-    }
+    }*/
 
     public void delete(Long id) {
         try{

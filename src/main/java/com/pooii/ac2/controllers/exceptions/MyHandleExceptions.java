@@ -1,4 +1,4 @@
-package com.pooii.ac1.controllers.exceptions;
+package com.pooii.ac2.controllers.exceptions;
 
 import java.util.HashMap;
 import java.util.Map;
