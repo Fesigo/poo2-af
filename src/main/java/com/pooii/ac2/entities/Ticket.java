@@ -1,42 +1,39 @@
 package com.pooii.ac2.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Instant;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
-@Table(name = "TB_PLACE")
-public class Place implements Serializable {
-    
+@Table(name = "TB_TICKET")
+public class Ticket implements Serializable{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String address;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "places")
-    private List<Event> events = new ArrayList<>();
+    private TicketType type;
+    private Instant date;
+    private Double price;
 
-    public Place(){
+    @ManyToOne
+    private Event event;
+
+    public Ticket(){
         
     }
-    
-    public Place(Long id, String name, String address) {
+
+    public Ticket(Long id, TicketType type, Instant date, Double price) {
         this.id = id;
-        this.name = name;
-        this.address = address;
+        this.type = type;
+        this.date = date;
+        this.price = price;
     }
 
     public Long getId() {
@@ -47,32 +44,28 @@ public class Place implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public TicketType getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(TicketType type) {
+        this.type = type;
     }
 
-    public String getAddress() {
-        return address;
-    }
-    
-    public void setAddress(String address) {
-        this.address = address;
+    public Instant getDate() {
+        return date;
     }
 
-    public List<Event> getEvents() {
-        return events;
+    public void setDate(Instant date) {
+        this.date = date;
     }
 
-    public void setEvents(List<Event> eventsList) {
-        this.events = eventsList;
+    public Double getPrice() {
+        return price;
     }
 
-    public void addEvents(Event event) {
-        this.events.add(event);
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     @Override
@@ -91,7 +84,7 @@ public class Place implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Place other = (Place) obj;
+        Ticket other = (Ticket) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

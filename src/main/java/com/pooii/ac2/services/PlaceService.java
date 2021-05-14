@@ -1,6 +1,7 @@
 package com.pooii.ac2.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -24,6 +25,13 @@ public class PlaceService {
     public Page<Place> getPlaces(PageRequest pageRequest){
         Page<Place> places = placeRepository.find(pageRequest);
         return places;
+    }
+
+    public Place getPlaceById(Long id) {
+        Optional<Place> op = placeRepository.findById(id);
+
+        Place place = op.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Place not found"));
+        return place;
     }
 
     public Place insert(Place place) {

@@ -10,7 +10,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
@@ -44,6 +47,14 @@ public class Event implements Serializable{
     private LocalTime endTime;
 
     private String emailContact;
+
+    @OneToMany
+    @JoinColumn(name = "EVENT_TICKET_ID")
+    private List<Ticket> tickets = new ArrayList<>();
+
+    private Long amountFreeTickets;
+    private Long amountPayedTickets;
+    private Double priceTicket;
     
     public Event(){
         
@@ -119,6 +130,38 @@ public class Event implements Serializable{
 
     public void setEmailContact(String emailContact) {
         this.emailContact = emailContact;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void addTicket(Ticket ticket) {
+        this.tickets.add(ticket);
+    }
+
+    public Long getAmountFreeTickets() {
+        return amountFreeTickets;
+    }
+
+    public void setAmountFreeTickets(Long amountFreeTickets) {
+        this.amountFreeTickets = amountFreeTickets;
+    }
+
+    public Long getAmountPayedTickets() {
+        return amountPayedTickets;
+    }
+
+    public void setAmountPayedTickets(Long amountPayedTickets) {
+        this.amountPayedTickets = amountPayedTickets;
+    }
+
+    public Double getPriceTicket() {
+        return priceTicket;
+    }
+
+    public void setPriceTicket(Double priceTicket) {
+        this.priceTicket = priceTicket;
     }
 
     @Override
