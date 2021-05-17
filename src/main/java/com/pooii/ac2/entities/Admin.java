@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "TB_ADMIN")
-@PrimaryKeyJoinColumn(name = "USER_ID")
+@PrimaryKeyJoinColumn(name = "ADMIN_ID")
 public class Admin extends BaseUser {
     
     private String phoneNumber;

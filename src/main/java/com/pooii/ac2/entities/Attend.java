@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "TB_ATTEND")
-@PrimaryKeyJoinColumn(name = "USER_ID")
+@PrimaryKeyJoinColumn(name = "ATTENDEE_ID")
 public class Attend extends BaseUser {
     
     private Double balance;

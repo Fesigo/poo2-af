@@ -57,7 +57,7 @@ public class Event implements Serializable{
     private Double priceTicket;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "ADMIN_ID")
     private Admin admin;
     
     public Event(){
