@@ -7,6 +7,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import com.pooii.ac2.dto.EventDTO;
+import com.pooii.ac2.entities.Admin;
 import com.pooii.ac2.entities.Event;
 import com.pooii.ac2.entities.Place;
 import com.pooii.ac2.repositories.EventRepository;
@@ -27,6 +28,9 @@ public class EventService {
     @Autowired
     private PlaceService placeService;
 
+    @Autowired
+    private AdminService adminService;
+
     public Page<Event> getEvents(PageRequest pageRequest, String name, String description, LocalDate startDate){
         Page<Event> list = repository.find(pageRequest, name, description, startDate);
 
@@ -40,6 +44,7 @@ public class EventService {
         return event;
     }
     
+    @Transactional
     public Event insert(Event e){
         Event event = new Event();
 
@@ -52,6 +57,13 @@ public class EventService {
                 throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "Horário inválido! O horário de início deve ser antes do horário de fim!");
             }
         }
+
+        event = repository.save(e);
+
+        //
+        Admin a = e.getAdmin();
+        a = adminService.getAdminById(Long.parseLong(e.getAdmin().getPhoneNumber()));
+        event.setAdmin(a);
 
         event = repository.save(e);
 

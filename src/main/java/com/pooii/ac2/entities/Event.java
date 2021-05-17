@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -54,6 +55,10 @@ public class Event implements Serializable{
     private Long amountFreeTickets;
     private Long amountPayedTickets;
     private Double priceTicket;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private Admin admin;
     
     public Event(){
         
@@ -161,6 +166,14 @@ public class Event implements Serializable{
 
     public void setPriceTicket(Double priceTicket) {
         this.priceTicket = priceTicket;
+    }
+
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.pooii.ac2.services;
 
+import java.util.Optional;
+
 import javax.persistence.EntityNotFoundException;
 
 import com.pooii.ac2.entities.Admin;
@@ -22,6 +24,13 @@ public class AdminService {
     public Page<Admin> getAdmins(PageRequest pageRequest) {
         Page<Admin> admins = adminRepository.find(pageRequest);
         return admins;
+    }
+
+    public Admin getAdminById(Long id){
+        Optional<Admin> op = adminRepository.findById(id);
+
+        Admin admin = op.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Admin not found"));
+        return admin;
     }
 
     public Admin insert(Admin admin) {

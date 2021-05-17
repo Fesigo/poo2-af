@@ -11,7 +11,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TB_BASEUSER")
+@Table(name = "TB_BASE_USER")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class BaseUser implements Serializable {
     
