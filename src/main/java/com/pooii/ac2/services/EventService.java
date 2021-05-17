@@ -10,8 +10,6 @@ import com.pooii.ac2.dto.EventDTO;
 import com.pooii.ac2.entities.Event;
 import com.pooii.ac2.entities.Place;
 import com.pooii.ac2.repositories.EventRepository;
-import com.pooii.ac2.repositories.PlaceRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;

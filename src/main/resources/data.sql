@@ -5,3 +5,19 @@ INSERT INTO tb_event (name, description, start_date, end_date, start_time, end_t
 INSERT INTO tb_place (name, address) VALUES ('Lugar1', 'Rua X, 11');
 INSERT INTO tb_place (name, address) VALUES ('Lugar2', 'Rua Y, 22');
 INSERT INTO tb_place (name, address) VALUES ('Lugar3', 'Rua Z, 33');
+
+INSERT INTO tb_baseuser(name, email) VALUES ('User1', 'user1@email.com');
+INSERT INTO tb_baseuser(name, email) VALUES ('User2', 'user2@email.com');
+INSERT INTO tb_baseuser(name, email) VALUES ('User3', 'user3@email.com');
+
+INSERT INTO tb_baseuser(name, email) VALUES ('User4', 'user4@email.com');
+INSERT INTO tb_baseuser(name, email) VALUES ('User5', 'user5@email.com');
+INSERT INTO tb_baseuser(name, email) VALUES ('User6', 'user6@email.com');
+
+INSERT INTO tb_admin(user_id, phone_number) VALUES ('1', '(15) 123456789');
+INSERT INTO tb_admin(user_id, phone_number) VALUES ('2', '(15) 123456789');
+INSERT INTO tb_admin(user_id, phone_number) VALUES ('3', '(15) 123456789');
+
+INSERT INTO tb_attend(user_id, balance) VALUES ('4', '100.0');
+INSERT INTO tb_attend(user_id, balance) VALUES ('5', '200.0');
+INSERT INTO tb_attend(user_id, balance) VALUES ('6', '300.0');

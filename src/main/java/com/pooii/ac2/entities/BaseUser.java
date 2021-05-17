@@ -1,40 +1,34 @@
 package com.pooii.ac2.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
-@Table(name = "TB_PLACE")
-public class Place implements Serializable {
+@Table(name = "TB_BASEUSER")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class BaseUser implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String address;
+    private String email;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "places")
-    private List<Event> events = new ArrayList<>();
+    public BaseUser(){
 
-    public Place(){
-        
     }
     
-    public Place(Long id, String name, String address) {
+    public BaseUser(Long id, String name, String email) {
         this.id = id;
         this.name = name;
-        this.address = address;
+        this.email = email;
     }
 
     public Long getId() {
@@ -44,7 +38,7 @@ public class Place implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
+    
     public String getName() {
         return name;
     }
@@ -53,24 +47,12 @@ public class Place implements Serializable {
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
-    }
-    
-    public void setAddress(String address) {
-        this.address = address;
+    public String getEmail() {
+        return email;
     }
 
-    public List<Event> getEvents() {
-        return events;
-    }
-
-    public void setEvents(List<Event> eventsList) {
-        this.events = eventsList;
-    }
-
-    public void addEvents(Event event) {
-        this.events.add(event);
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
@@ -89,7 +71,7 @@ public class Place implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Place other = (Place) obj;
+        BaseUser other = (BaseUser) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
