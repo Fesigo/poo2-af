@@ -1,6 +1,7 @@
 package com.pooii.ac2.services;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -70,11 +71,13 @@ public class EventService {
         return event;
     }
 
-    /*
+    
     public EventDTO update(Long id, EventDTO event) {
         try{
             Event entity = repository.getOne(id);
-            entity.addPlace(event.getPlaces());
+
+            verificaDispoLugar(event, entity.getPlaces());
+
             entity.setStartDate(event.getStartDate());
             entity.setEndDate(event.getEndDate());
             entity.setStartTime(event.getStartTime());
@@ -86,7 +89,7 @@ public class EventService {
         catch(EntityNotFoundException excep){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
         }
-    }*/
+    }
 
     public void delete(Long id) {
         try{
@@ -136,4 +139,39 @@ public class EventService {
 
         return event;
     }
+
+    public void verificaDispoLugar(EventDTO event, List<Place> places){
+
+        if(!places.isEmpty()){
+            for(Place place : places){
+                for(Event e : place.getEvents()){
+    
+                    if(event.getStartDate().isAfter(e.getStartDate()) && event.getStartDate().isBefore(e.getEndDate())){
+                        throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "O lugar não está disponível nessa data!");
+                    }
+                    else if(event.getEndDate().isAfter(e.getStartDate()) && event.getEndDate().isBefore(e.getEndDate())){
+                        throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "O lugar não está disponível nessa data!");
+                    }
+                    else if(event.getStartDate().isBefore(e.getStartDate()) && event.getEndDate().isAfter(e.getEndDate())){
+                        throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "O lugar não está disponível nessa data!");
+                    }
+                    else if(event.getStartDate().isEqual(e.getStartDate()) && event.getEndDate().isEqual(e.getEndDate())){
+                        throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "O lugar não está disponível nessa data!");
+                    }
+                    else if(event.getStartDate().isEqual(e.getEndDate())){
+                        if(event.getStartTime().isBefore(e.getEndTime())){
+                            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "O lugar não está disponível nesse horário!");
+                        }
+                    }
+                    else if(event.getEndDate().isEqual(e.getStartDate())){
+                        if(event.getEndTime().isAfter(e.getStartTime())){
+                            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "O lugar não está disponível nesse horário!");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
 }

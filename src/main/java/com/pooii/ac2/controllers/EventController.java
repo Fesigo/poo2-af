@@ -69,12 +69,12 @@ public class EventController {
         return ResponseEntity.created(uri).body(e);
     }
 
-    /*
+    
     @PutMapping("{id}")
     public ResponseEntity<EventDTO> update(@PathVariable Long id, @RequestBody @Valid EventDTO eventDTO){
         EventDTO dto = service.update(id, eventDTO);
         return ResponseEntity.ok().body(dto);
-    }*/
+    }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
@@ -85,8 +85,6 @@ public class EventController {
     @PostMapping("/{idEvent}/places/{idPlace}")
     public ResponseEntity<Event> addPlace(@PathVariable Long idEvent, @PathVariable Long idPlace){
         Event event = service.eventPlace(idEvent, idPlace);
-        //URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(event.getId()).toUri();
-        //return ResponseEntity.created(uri).body(event);
         return ResponseEntity.ok(event);
     }
 }
