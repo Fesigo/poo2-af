@@ -8,7 +8,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import com.pooii.ac2.dto.EventDTO;
-import com.pooii.ac2.entities.Admin;
 import com.pooii.ac2.entities.Event;
 import com.pooii.ac2.entities.Place;
 import com.pooii.ac2.repositories.EventRepository;
@@ -59,12 +58,7 @@ public class EventService {
             }
         }
 
-        event = repository.save(e);
-
-        //
-        Admin a = e.getAdmin();
-        a = adminService.getAdminById(Long.parseLong(e.getAdmin().getPhoneNumber()));
-        event.setAdmin(a);
+        e.setAdmin(adminService.getAdminById(e.getAdmin().getId()));
 
         event = repository.save(e);
 
