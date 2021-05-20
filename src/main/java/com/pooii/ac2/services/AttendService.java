@@ -27,6 +27,10 @@ public class AttendService {
     public Attend insert(Attend attend) {
         Attend a = new Attend();
 
+        if(attend.getBalance() == null){
+            attend.setBalance(0.0);
+        }
+
         a = attendRepository.save(attend);
 
         return a;

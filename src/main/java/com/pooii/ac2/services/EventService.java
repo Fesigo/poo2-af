@@ -76,6 +76,8 @@ public class EventService {
         try{
             Event entity = repository.getOne(id);
 
+            verificaDataEvento(entity);
+
             verificaDispoLugar(event, entity.getPlaces());
 
             entity.setStartDate(event.getStartDate());
@@ -171,6 +173,14 @@ public class EventService {
                 }
             }
         }
+    }
+
+    public void verificaDataEvento(Event event){
+
+        if(event.getEndDate().isBefore(LocalDate.now())){
+            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "O evento já foi realizado!");
+        }
+
     }
 
 

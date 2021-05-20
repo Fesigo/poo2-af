@@ -2,6 +2,8 @@ package com.pooii.ac2.controllers;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import com.pooii.ac2.entities.Admin;
 import com.pooii.ac2.services.AdminService;
 
@@ -46,7 +48,7 @@ public class AdminController {
     }
 
     @PostMapping
-    public ResponseEntity<Admin> insertAdmin (@RequestBody Admin admin){
+    public ResponseEntity<Admin> insertAdmin (@RequestBody @Valid Admin admin){
         Admin a = adminService.insert(admin);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(a.getId()).toUri();
         return ResponseEntity.created(uri).body(a);
@@ -59,7 +61,7 @@ public class AdminController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Admin> updateAdmin(@PathVariable Long id, @RequestBody Admin admin){
+    public ResponseEntity<Admin> updateAdmin(@PathVariable Long id, @RequestBody @Valid Admin admin){
         Admin a = adminService.update(id, admin);
         return ResponseEntity.ok().body(a);
     }

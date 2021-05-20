@@ -1,6 +1,9 @@
 package com.pooii.ac2.controllers;
 
 import java.net.URI;
+
+import javax.validation.Valid;
+
 import com.pooii.ac2.entities.Place;
 import com.pooii.ac2.services.PlaceService;
 
@@ -43,7 +46,7 @@ public class PlaceController {
     }
 
     @PostMapping
-    public ResponseEntity<Place> insertPlace(@RequestBody Place place){
+    public ResponseEntity<Place> insertPlace(@RequestBody @Valid Place place){
 
         Place p = placeService.insert(place);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(p.getId()).toUri();
@@ -52,7 +55,7 @@ public class PlaceController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Place> updatePlace(@PathVariable Long id, @RequestBody Place place){
+    public ResponseEntity<Place> updatePlace(@PathVariable Long id, @RequestBody @Valid Place place){
         Place p = placeService.update(id, place);
         return ResponseEntity.ok().body(p);
     }

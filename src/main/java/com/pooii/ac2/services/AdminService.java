@@ -1,10 +1,12 @@
 package com.pooii.ac2.services;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 
 import com.pooii.ac2.entities.Admin;
+import com.pooii.ac2.entities.Event;
 import com.pooii.ac2.repositories.AdminRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,7 @@ public class AdminService {
 
     public void delete(Long id) {
         try{
+            verificaEventosAdmin(id);
             adminRepository.deleteById(id);
         }
         catch(EmptyResultDataAccessException e){
@@ -64,6 +67,21 @@ public class AdminService {
         }
     }
 
+    public void verificaEventosAdmin(Long id){
+
+        Admin admin = getAdminById(id);
+
+        if(!admin.getEvents().isEmpty()){
+            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,"Esse admin possui eventos cadastrados, portanto não pode ser deletado!");
+        }
+
+        /*for(Event e : admin.getEvents()){
+            if(e.getStartDate().isAfter(LocalDate.now()) || e.getEndDate().isAfter(LocalDate.now())){
+                throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,"Esse admin possui um evento agendado, portanto não pode ser deletado!");
+            }
+        }*/
+
+    }
 
 
 }

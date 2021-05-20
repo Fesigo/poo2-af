@@ -2,6 +2,8 @@ package com.pooii.ac2.controllers;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import com.pooii.ac2.entities.Attend;
 import com.pooii.ac2.services.AttendService;
 
@@ -45,7 +47,7 @@ public class AttendController {
     }
 
     @PostMapping
-    public ResponseEntity<Attend> insertAttendee(@RequestBody Attend attend){
+    public ResponseEntity<Attend> insertAttendee(@RequestBody @Valid Attend attend){
 
         Attend a = attendService.insert(attend);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(a.getId()).toUri();
@@ -54,7 +56,7 @@ public class AttendController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Attend> updateAttendee(@PathVariable Long id, @RequestBody Attend attend){
+    public ResponseEntity<Attend> updateAttendee(@PathVariable Long id, @RequestBody @Valid Attend attend){
         Attend a = attendService.update(id, attend);
         return ResponseEntity.ok().body(a);
     }
