@@ -1,9 +1,9 @@
 package com.pooii.ac2.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
-
 import com.pooii.ac2.entities.Admin;
 import com.pooii.ac2.repositories.AdminRepository;
 
@@ -35,6 +35,14 @@ public class AdminService {
 
     public Admin insert(Admin admin) {
         Admin a = new Admin();
+
+        List<Admin> admins = adminRepository.findAll();
+
+        for(Admin adm : admins){
+            if(adm.getEmail().equals(admin.getEmail())){
+                throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "This email address is already being used!");
+            }
+        }
 
         a = adminRepository.save(admin);
         return a;
@@ -70,7 +78,7 @@ public class AdminService {
         Admin admin = getAdminById(id);
 
         if(!admin.getEvents().isEmpty()){
-            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,"Esse admin possui eventos cadastrados, portanto não pode ser deletado!");
+            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,"This admin has registered events, so it can't be deleted!");
         }
 
     }

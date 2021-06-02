@@ -10,9 +10,9 @@ INSERT INTO tb_admin(admin_id, phone_number) VALUES ('1', '(15) 123456789');
 INSERT INTO tb_admin(admin_id, phone_number) VALUES ('2', '(15) 987654321');
 INSERT INTO tb_admin(admin_id, phone_number) VALUES ('3', '(15) 123454321');
 
-INSERT INTO tb_attend(attendee_id, balance) VALUES ('4', '100.0');
-INSERT INTO tb_attend(attendee_id, balance) VALUES ('5', '200.0');
-INSERT INTO tb_attend(attendee_id, balance) VALUES ('6', '300.0');
+INSERT INTO tb_attend(attendee_id, balance) VALUES ('4', '0.0');
+INSERT INTO tb_attend(attendee_id, balance) VALUES ('5', '0.0');
+INSERT INTO tb_attend(attendee_id, balance) VALUES ('6', '0.0');
 
 INSERT INTO tb_place (name, address) VALUES ('Place1', 'Street X, 11');
 INSERT INTO tb_place (name, address) VALUES ('Place2', 'Street Y, 22');

@@ -22,9 +22,9 @@ public class Place implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Nome do lugar é obrigatório!")
+    @NotBlank(message = "Place's name is required!")
     private String name;
-    @NotBlank(message = "Endereço do lugar é obrigatório!")
+    @NotBlank(message = "Place's address is required!")
     private String address;
 
     @JsonIgnore

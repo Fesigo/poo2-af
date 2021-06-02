@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @PrimaryKeyJoinColumn(name = "ADMIN_ID")
 public class Admin extends BaseUser {
     
-    @NotBlank(message = "Número de telefone obrigatório!")
+    @NotBlank(message = "Phone number is required!")
     private String phoneNumber;
 
     @JsonIgnore
@@ -51,7 +51,5 @@ public class Admin extends BaseUser {
     public void addEvents(Event event) {
         this.events.add(event);
     }
-
-    
 
 }

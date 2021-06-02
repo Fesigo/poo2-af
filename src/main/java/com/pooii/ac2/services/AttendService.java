@@ -2,6 +2,8 @@ package com.pooii.ac2.services;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.pooii.ac2.dto.AttendInsertDTO;
+import com.pooii.ac2.dto.AttendUpdateDTO;
 import com.pooii.ac2.entities.Attend;
 import com.pooii.ac2.repositories.AttendRepository;
 
@@ -24,25 +26,24 @@ public class AttendService {
         return attendees;
     }
 
-    public Attend insert(Attend attend) {
+    public Attend insert(AttendInsertDTO attend) {
         Attend a = new Attend();
 
-        if(attend.getBalance() == null){
-            attend.setBalance(0.0);
-        }
+        a.setName(attend.getName());
+        a.setEmail(attend.getEmail());
+        a.setBalance(0.0);
 
-        a = attendRepository.save(attend);
+        a = attendRepository.save(a);
 
         return a;
     }
 
-    public Attend update(Long id, Attend attend) {
+    public Attend update(Long id, AttendUpdateDTO attend) {
 
         try{
             Attend a = attendRepository.getOne(id);
-            a.setName(attend.getName());
+
             a.setEmail(attend.getEmail());
-            a.setBalance(attend.getBalance());
 
             a = attendRepository.save(a);
             return a;

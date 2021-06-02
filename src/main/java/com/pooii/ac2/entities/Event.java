@@ -27,10 +27,10 @@ public class Event implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @NotBlank(message = "Nome do evento é obrigatório!")
+    @NotBlank(message = "Event name is required!")
     private String name;
 
-    @NotBlank(message = "Descrição do evento é obrigatória!")
+    @NotBlank(message = "Event's description is required!")
     private String description;
     
     //@NotBlank(message = "Lugar do evento é obrigatório!")

@@ -20,9 +20,9 @@ public class BaseUser implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Nome do usuário obrigatório!")
+    @NotBlank(message = "Username is required!")
     private String name;
-    @NotBlank(message = "Email do usuário é obrigatório!")
+    @NotBlank(message = "Email is required!")
     private String email;
 
     public BaseUser(){
