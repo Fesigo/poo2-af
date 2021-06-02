@@ -1,4 +1,4 @@
-# POO2-AC2
+# POO2-AF
 
 ## Integrantes:
 - Felipe Siqueira Godoy     RA: 190337
@@ -19,8 +19,7 @@
 ## /attendees
 {
     "name": "Attendee Name",
-    "email": "attendee@email.com",
-    "balance": "150.0"
+    "email": "attendee@email.com"
 }
 
 ## /places
