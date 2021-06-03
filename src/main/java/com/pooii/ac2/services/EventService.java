@@ -23,7 +23,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class EventService {
 
     @Autowired
-    private EventRepository repository;
+    private EventRepository eventRepository;
 
     @Autowired
     private PlaceService placeService;
@@ -32,13 +32,13 @@ public class EventService {
     private AdminService adminService;
 
     public Page<Event> getEvents(PageRequest pageRequest, String name, String description, LocalDate startDate){
-        Page<Event> list = repository.find(pageRequest, name, description, startDate);
+        Page<Event> list = eventRepository.find(pageRequest, name, description, startDate);
 
         return list;
     }
 
     public Event getEventById(Long id) {
-        Optional<Event> op = repository.findById(id);
+        Optional<Event> op = eventRepository.findById(id);
 
         Event event = op.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
         return event;
@@ -64,7 +64,7 @@ public class EventService {
 
         e.setAdmin(adminService.getAdminById(e.getAdmin().getId()));
 
-        event = repository.save(e);
+        event = eventRepository.save(e);
 
         return event;
     }
@@ -72,7 +72,7 @@ public class EventService {
     
     public EventDTO update(Long id, EventDTO event) {
         try{
-            Event entity = repository.getOne(id);
+            Event entity = eventRepository.getOne(id);
 
             verificaDataEvento(entity);
 
@@ -83,7 +83,7 @@ public class EventService {
             entity.setStartTime(event.getStartTime());
             entity.setEndTime(event.getEndTime());
 
-            entity = repository.save(entity);
+            entity = eventRepository.save(entity);
             return new EventDTO(entity);
         }
         catch(EntityNotFoundException excep){
@@ -93,7 +93,7 @@ public class EventService {
 
     public void delete(Long id) {
         try{
-            repository.deleteById(id);
+            eventRepository.deleteById(id);
         }
         catch(EmptyResultDataAccessException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
@@ -178,6 +178,29 @@ public class EventService {
         if(event.getEndDate().isBefore(LocalDate.now())){
             throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "The event has already happened!");
         }
+
+    }
+
+    public void removeEventPlace(Long idEvent, Long idPlace) {
+
+        Event event = getEventById(idEvent);
+        Place place = placeService.getPlaceById(idPlace);
+
+        //verificaDataEvento(event);
+        int aux = 0;
+        for(Place p : event.getPlaces()){
+            if(p == place){
+                aux = 1;
+            }
+        }
+
+        if(aux == 0){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This place is not associated to this event!");
+        }
+
+       
+        event.removePlace(place);
+        eventRepository.save(event);
 
     }
 

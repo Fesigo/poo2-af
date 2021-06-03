@@ -77,6 +77,10 @@ public class Place implements Serializable {
         this.events.add(event);
     }
 
+    public void removeEvent(Event event){
+        this.events.remove(event);
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
