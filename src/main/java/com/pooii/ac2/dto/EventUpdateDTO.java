@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pooii.ac2.entities.Event;
 
-public class EventDTO {
+public class EventUpdateDTO {
     
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate startDate;
@@ -16,11 +16,11 @@ public class EventDTO {
     @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime endTime;
 
-    public EventDTO(){
+    public EventUpdateDTO(){
         
     }
     
-    public EventDTO(Event entity) {
+    public EventUpdateDTO(Event entity) {
         this.startDate = entity.getStartDate();
         this.endDate = entity.getEndDate();
         this.startTime = entity.getStartTime();

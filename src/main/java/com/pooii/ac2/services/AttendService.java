@@ -1,5 +1,7 @@
 package com.pooii.ac2.services;
 
+import java.util.Optional;
+
 import javax.persistence.EntityNotFoundException;
 
 import com.pooii.ac2.dto.AttendInsertDTO;
@@ -24,6 +26,13 @@ public class AttendService {
     public Page<Attend> getAttendees(PageRequest pageRequest) {
         Page<Attend> attendees = attendRepository.find(pageRequest);
         return attendees;
+    }
+
+    public Attend getAttendById(Long id){
+        Optional<Attend> op = attendRepository.findById(id);
+
+        Attend attend = op.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Attendee not found"));
+        return attend;
     }
 
     public Attend insert(AttendInsertDTO attend) {

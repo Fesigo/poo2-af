@@ -7,9 +7,13 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
-import com.pooii.ac2.dto.EventDTO;
+import com.pooii.ac2.dto.EventUpdateDTO;
+import com.pooii.ac2.dto.TicketSellDTO;
+import com.pooii.ac2.entities.Attend;
 import com.pooii.ac2.entities.Event;
 import com.pooii.ac2.entities.Place;
+import com.pooii.ac2.entities.Ticket;
+import com.pooii.ac2.repositories.AttendRepository;
 import com.pooii.ac2.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -30,6 +34,15 @@ public class EventService {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private AttendService attendService;
+
+    @Autowired
+    private AttendRepository attendRepository;
+
+    @Autowired
+    private TicketService ticketService;
 
     public Page<Event> getEvents(PageRequest pageRequest, String name, String description, LocalDate startDate){
         Page<Event> list = eventRepository.find(pageRequest, name, description, startDate);
@@ -70,7 +83,7 @@ public class EventService {
     }
 
     
-    public EventDTO update(Long id, EventDTO event) {
+    public EventUpdateDTO update(Long id, EventUpdateDTO event) {
         try{
             Event entity = eventRepository.getOne(id);
 
@@ -84,7 +97,7 @@ public class EventService {
             entity.setEndTime(event.getEndTime());
 
             entity = eventRepository.save(entity);
-            return new EventDTO(entity);
+            return new EventUpdateDTO(entity);
         }
         catch(EntityNotFoundException excep){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
@@ -140,7 +153,7 @@ public class EventService {
         return event;
     }
 
-    public void verificaDispoLugar(EventDTO event, List<Place> places){
+    public void verificaDispoLugar(EventUpdateDTO event, List<Place> places){
 
         if(!places.isEmpty()){
             for(Place place : places){
@@ -204,5 +217,21 @@ public class EventService {
 
     }
 
+    public Event sellTicket(Long idEvent, TicketSellDTO ticket) {
+        
+        Event e = getEventById(idEvent);
+        Ticket t = ticketService.insert(ticket, e);
+        Attend a = attendService.getAttendById(ticket.getAttend().getId());
+
+        //t.setEvent(e);
+        e.addTicket(t);
+        e = eventRepository.save(e);
+
+        a.addTickets(t);
+        a = attendRepository.save(a);
+
+        return e;
+
+    }
 
 }

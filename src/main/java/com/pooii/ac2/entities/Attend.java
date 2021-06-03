@@ -1,8 +1,15 @@
 package com.pooii.ac2.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "TB_ATTEND")
@@ -10,6 +17,11 @@ import javax.persistence.Table;
 public class Attend extends BaseUser {
     
     private Double balance;
+
+    @JsonIgnore
+    @OneToMany
+    @JoinColumn(name = "ATTEND_ATTENDEE_ID")
+    private List<Ticket> tickets = new ArrayList<>();
 
     public Attend(){
         
@@ -31,4 +43,14 @@ public class Attend extends BaseUser {
     public void setBalance(Double balance) {
         this.balance = balance;
     }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void addTickets(Ticket ticket) {
+        this.tickets.add(ticket);
+    }
+
+    
 }

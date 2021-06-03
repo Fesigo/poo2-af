@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "TB_TICKET")
 public class Ticket implements Serializable{
@@ -22,8 +24,12 @@ public class Ticket implements Serializable{
     private Instant date;
     private Double price;
 
+    @JsonIgnore
     @ManyToOne
     private Event event;
+
+    @ManyToOne
+    private Attend attend;
 
     public Ticket(){
         
@@ -66,6 +72,22 @@ public class Ticket implements Serializable{
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Attend getAttend() {
+        return attend;
+    }
+
+    public void setAttend(Attend attend) {
+        this.attend = attend;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     @Override

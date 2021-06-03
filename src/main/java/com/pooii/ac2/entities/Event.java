@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "TB_EVENT")
@@ -33,7 +34,6 @@ public class Event implements Serializable{
     @NotBlank(message = "Event's description is required!")
     private String description;
     
-    //@NotBlank(message = "Lugar do evento é obrigatório!")
     @ManyToMany
     private List<Place> places = new ArrayList<>();
 
@@ -48,8 +48,9 @@ public class Event implements Serializable{
 
     private String emailContact;
 
+    @JsonIgnore
     @OneToMany
-    @JoinColumn(name = "EVENT_TICKET_ID")
+    @JoinColumn(name = "EVENT_ID")
     private List<Ticket> tickets = new ArrayList<>();
 
     private Long amountFreeTickets;

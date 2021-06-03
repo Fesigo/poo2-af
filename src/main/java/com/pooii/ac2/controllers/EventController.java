@@ -6,9 +6,12 @@ import java.time.format.DateTimeFormatter;
 
 import javax.validation.Valid;
 
-import com.pooii.ac2.dto.EventDTO;
+import com.pooii.ac2.dto.EventUpdateDTO;
+import com.pooii.ac2.dto.TicketSellDTO;
 import com.pooii.ac2.entities.Event;
+import com.pooii.ac2.entities.Ticket;
 import com.pooii.ac2.services.EventService;
+import com.pooii.ac2.services.TicketService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +35,8 @@ public class EventController {
 
     @Autowired
     private EventService service;
+
+    @Autowired TicketService ticketService;
 
     @GetMapping
     public ResponseEntity<Page<Event>> getEvents(
@@ -71,8 +76,8 @@ public class EventController {
 
     
     @PutMapping("{id}")
-    public ResponseEntity<EventDTO> update(@PathVariable Long id, @RequestBody @Valid EventDTO eventDTO){
-        EventDTO dto = service.update(id, eventDTO);
+    public ResponseEntity<EventUpdateDTO> update(@PathVariable Long id, @RequestBody @Valid EventUpdateDTO eventDTO){
+        EventUpdateDTO dto = service.update(id, eventDTO);
         return ResponseEntity.ok().body(dto);
     }
 
@@ -92,5 +97,29 @@ public class EventController {
     public ResponseEntity<Event> removePlace(@PathVariable Long idEvent, @PathVariable Long idPlace){
         service.removeEventPlace(idEvent, idPlace);
         return ResponseEntity.noContent().build();
+    }
+
+    // WIP
+    @GetMapping("/{idEvent}/tickets")
+    public ResponseEntity<Page<Ticket>> getTickets(
+
+        @RequestParam(value = "page", defaultValue = "0") Integer page,
+        @RequestParam(value = "linesPerPage", defaultValue = "6") Integer linesPerPage,
+        @RequestParam(value = "direction", defaultValue = "ASC") String direction,
+        @RequestParam(value = "orderBy", defaultValue = "id") String orderBy
+
+    ){
+
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+
+        Page<Ticket> tickets = ticketService.getTickets(pageRequest);
+        return ResponseEntity.ok(tickets);
+
+    }
+
+    @PostMapping("/{idEvent}/tickets")
+    public ResponseEntity<Event> sellTickets(@PathVariable Long idEvent, @RequestBody @Valid TicketSellDTO ticket){
+        Event event = service.sellTicket(idEvent, ticket);
+        return ResponseEntity.ok(event);
     }
 }
