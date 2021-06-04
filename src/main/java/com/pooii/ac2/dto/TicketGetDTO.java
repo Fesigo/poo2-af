@@ -6,28 +6,28 @@ import com.pooii.ac2.entities.Ticket;
 
 public class TicketGetDTO {
 
-    private Long amountFreeTickets;
-    private Long amountPayedTickets;
+    private Long totalAmountFreeTickets;
+    private Long totalAmountPayedTickets;
     
     private Long soldFreeTickets;
     private Long soldPayedTickets;
     
     List<Ticket> tickets;
 
-    public Long getAmountFreeTickets() {
-        return amountFreeTickets;
+    public Long getTotalAmountFreeTickets() {
+        return totalAmountFreeTickets;
     }
 
-    public void setAmountFreeTickets(Long amountFreeTickets) {
-        this.amountFreeTickets = amountFreeTickets;
+    public void setTotalAmountFreeTickets(Long totalAmountFreeTickets) {
+        this.totalAmountFreeTickets = totalAmountFreeTickets;
     }
 
-    public Long getAmountPayedTickets() {
-        return amountPayedTickets;
+    public Long getTotalAmountPayedTickets() {
+        return totalAmountPayedTickets;
     }
 
-    public void setAmountPayedTickets(Long amountPayedTickets) {
-        this.amountPayedTickets = amountPayedTickets;
+    public void setTotalAmountPayedTickets(Long totalAmountPayedTickets) {
+        this.totalAmountPayedTickets = totalAmountPayedTickets;
     }
 
     public Long getSoldFreeTickets() {

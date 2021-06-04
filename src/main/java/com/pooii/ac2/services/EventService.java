@@ -205,7 +205,8 @@ public class EventService {
         Event event = getEventById(idEvent);
         Place place = placeService.getPlaceById(idPlace);
 
-        //verificaDataEvento(event);
+        verificaDataEvento(event);
+
         int aux = 0;
         for(Place p : event.getPlaces()){
             if(p == place){
@@ -226,6 +227,27 @@ public class EventService {
     public Event sellTicket(Long idEvent, TicketSellDTO ticket) {
         
         Event e = getEventById(idEvent);
+
+        verificaDataEvento(e);
+
+        Long contTickets = 0l;
+        for(Ticket tick : e.getTickets()){
+            if(tick.getType().equals(ticket.getType())){
+                contTickets++;
+            }
+        }
+
+        if(ticket.getType().equals(TicketType.FREE)){
+            if(contTickets == e.getAmountFreeTickets()){
+                throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "The free tickets are sold out!");
+            }
+        }
+        else{
+            if(contTickets == e.getAmountPayedTickets()){
+                throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "The paid tickets are sold out!");
+            }
+        }
+
         Ticket t = ticketService.insert(ticket, e);
         Attend a = attendService.getAttendById(ticket.getAttend().getId());
 
@@ -246,8 +268,8 @@ public class EventService {
 
         TicketGetDTO dto = new TicketGetDTO();
 
-        dto.setAmountFreeTickets(e.getAmountFreeTickets());
-        dto.setAmountPayedTickets(e.getAmountPayedTickets());
+        dto.setTotalAmountFreeTickets(e.getAmountFreeTickets());
+        dto.setTotalAmountPayedTickets(e.getAmountPayedTickets());
         dto.setSoldFreeTickets(0l);
         dto.setSoldPayedTickets(0l);
 
