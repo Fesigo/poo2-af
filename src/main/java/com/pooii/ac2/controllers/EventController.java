@@ -7,9 +7,9 @@ import java.time.format.DateTimeFormatter;
 import javax.validation.Valid;
 
 import com.pooii.ac2.dto.EventUpdateDTO;
+import com.pooii.ac2.dto.TicketGetDTO;
 import com.pooii.ac2.dto.TicketSellDTO;
 import com.pooii.ac2.entities.Event;
-import com.pooii.ac2.entities.Ticket;
 import com.pooii.ac2.services.EventService;
 import com.pooii.ac2.services.TicketService;
 
@@ -100,21 +100,31 @@ public class EventController {
     }
 
     // WIP
+    /*
     @GetMapping("/{idEvent}/tickets")
     public ResponseEntity<Page<Ticket>> getTickets(
 
         @RequestParam(value = "page", defaultValue = "0") Integer page,
         @RequestParam(value = "linesPerPage", defaultValue = "6") Integer linesPerPage,
         @RequestParam(value = "direction", defaultValue = "ASC") String direction,
-        @RequestParam(value = "orderBy", defaultValue = "id") String orderBy
+        @RequestParam(value = "orderBy", defaultValue = "id") String orderBy,
+        @PathVariable Long idEvent
 
     ){
 
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 
-        Page<Ticket> tickets = ticketService.getTickets(pageRequest);
+        Page<Ticket> tickets = service.getTickets(pageRequest, idEvent);
         return ResponseEntity.ok(tickets);
 
+    }*/
+
+    @GetMapping("/{idEvent}/tickets")
+    public ResponseEntity<TicketGetDTO> getTickets(@PathVariable Long idEvent){
+
+        TicketGetDTO dto = service.getTickets(idEvent);
+        return ResponseEntity.ok(dto);
+        
     }
 
     @PostMapping("/{idEvent}/tickets")
@@ -122,4 +132,6 @@ public class EventController {
         Event event = service.sellTicket(idEvent, ticket);
         return ResponseEntity.ok(event);
     }
+
+
 }

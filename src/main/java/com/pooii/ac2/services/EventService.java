@@ -8,13 +8,17 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import com.pooii.ac2.dto.EventUpdateDTO;
+import com.pooii.ac2.dto.TicketGetDTO;
 import com.pooii.ac2.dto.TicketSellDTO;
 import com.pooii.ac2.entities.Attend;
 import com.pooii.ac2.entities.Event;
 import com.pooii.ac2.entities.Place;
 import com.pooii.ac2.entities.Ticket;
+import com.pooii.ac2.entities.TicketType;
 import com.pooii.ac2.repositories.AttendRepository;
 import com.pooii.ac2.repositories.EventRepository;
+import com.pooii.ac2.repositories.TicketRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -43,6 +47,8 @@ public class EventService {
 
     @Autowired
     private TicketService ticketService;
+
+    @Autowired TicketRepository ticketRepository;
 
     public Page<Event> getEvents(PageRequest pageRequest, String name, String description, LocalDate startDate){
         Page<Event> list = eventRepository.find(pageRequest, name, description, startDate);
@@ -233,5 +239,46 @@ public class EventService {
         return e;
 
     }
+
+    public TicketGetDTO getTickets(Long idEvent) {
+        
+        Event e = getEventById(idEvent);
+
+        TicketGetDTO dto = new TicketGetDTO();
+
+        dto.setAmountFreeTickets(e.getAmountFreeTickets());
+        dto.setAmountPayedTickets(e.getAmountPayedTickets());
+        dto.setSoldFreeTickets(0l);
+        dto.setSoldPayedTickets(0l);
+
+        for(Ticket t : e.getTickets()){
+            if(t.getType().equals(TicketType.FREE)){
+                dto.setSoldFreeTickets(dto.getSoldFreeTickets() + 1);
+            }
+            else{
+                dto.setSoldPayedTickets(dto.getSoldPayedTickets() + 1);
+            }
+        }
+
+        dto.setTickets(e.getTickets());
+
+        return dto;
+
+    }
+
+    // WIP
+    /*public Page<Ticket> getTickets(PageRequest pageRequest, Long idEvent) {
+
+        Event e = getEventById(idEvent);
+        //List<Ticket> tickets = ticketRepository.findAll();
+
+        Page<Ticket> tickets = eventRepository.findTickets(pageRequest, idEvent);
+
+        return tickets;
+
+    }
+    */
+
+
 
 }

@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface TicketRepository extends JpaRepository <Ticket, Long> {
 
-    @Query("SELECT DISTINCT t FROM Ticket t")
+    @Query("SELECT t FROM Ticket t")
     public Page<Ticket> find(Pageable pageRequest);
     
 }
