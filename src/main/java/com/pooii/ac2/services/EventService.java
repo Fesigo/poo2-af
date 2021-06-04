@@ -102,6 +102,8 @@ public class EventService {
             entity.setStartTime(event.getStartTime());
             entity.setEndTime(event.getEndTime());
 
+            entity.setPriceTicket(event.getPriceTicket());
+
             entity = eventRepository.save(entity);
             return new EventUpdateDTO(entity);
         }
@@ -112,6 +114,12 @@ public class EventService {
 
     public void delete(Long id) {
         try{
+
+            Event e = getEventById(id);
+            if(e.getTickets().size() > 0){
+                throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "This event has tickets sold!");
+            }
+
             eventRepository.deleteById(id);
         }
         catch(EmptyResultDataAccessException e){
@@ -251,15 +259,51 @@ public class EventService {
         Ticket t = ticketService.insert(ticket, e);
         Attend a = attendService.getAttendById(ticket.getAttend().getId());
 
-        //t.setEvent(e);
         e.addTicket(t);
         e = eventRepository.save(e);
 
+        if(a.getBalance() >= e.getPriceTicket()){
+            a.setBalance(a.getBalance() - e.getPriceTicket());
+        }
         a.addTickets(t);
         a = attendRepository.save(a);
 
         return e;
 
+    }
+
+    public void deleteTickets(Long idEvent, TicketSellDTO ticket){
+
+        Attend a = attendService.getAttendById(ticket.getAttend().getId());
+
+        if(a.getTickets().size() == 0){
+            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "This attendee has no tickets!");
+        }
+
+        Event e = getEventById(idEvent);
+
+        if(e.getStartDate().isBefore(LocalDate.now())){
+            throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "The event has already started!");
+        }
+
+        for(Ticket t : a.getTickets()){
+            if(t.getType().equals(TicketType.PAYED)){
+                
+                a.setBalance(a.getBalance() + t.getPrice());
+
+                ticketService.deleteTicketById(t.getId());
+
+                return;
+            }
+        }
+
+        for(Ticket t : a.getTickets()){
+
+            ticketService.deleteTicketById(t.getId());
+
+            return;
+        }
+        
     }
 
     public TicketGetDTO getTickets(Long idEvent) {
@@ -287,20 +331,5 @@ public class EventService {
         return dto;
 
     }
-
-    // WIP
-    /*public Page<Ticket> getTickets(PageRequest pageRequest, Long idEvent) {
-
-        Event e = getEventById(idEvent);
-        //List<Ticket> tickets = ticketRepository.findAll();
-
-        Page<Ticket> tickets = eventRepository.findTickets(pageRequest, idEvent);
-
-        return tickets;
-
-    }
-    */
-
-
 
 }

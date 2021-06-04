@@ -16,6 +16,8 @@ public class EventUpdateDTO {
     @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime endTime;
 
+    private Double priceTicket;
+
     public EventUpdateDTO(){
         
     }
@@ -25,6 +27,7 @@ public class EventUpdateDTO {
         this.endDate = entity.getEndDate();
         this.startTime = entity.getStartTime();
         this.endTime = entity.getEndTime();
+        this.priceTicket = entity.getPriceTicket();
     }
 
     public LocalDate getStartDate() {
@@ -57,5 +60,13 @@ public class EventUpdateDTO {
     
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
+    }
+
+    public Double getPriceTicket() {
+        return priceTicket;
+    }
+
+    public void setPriceTicket(Double priceTicket) {
+        this.priceTicket = priceTicket;
     }
 }

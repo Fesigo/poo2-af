@@ -133,5 +133,11 @@ public class EventController {
         return ResponseEntity.ok(event);
     }
 
+    @DeleteMapping("/{idEvent}/tickets")
+    public ResponseEntity<Void> deleteTicket(@PathVariable Long idEvent, @RequestBody TicketSellDTO ticket){
+        service.deleteTickets(idEvent, ticket);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

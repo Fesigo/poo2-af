@@ -57,6 +57,12 @@ public class PlaceService {
 
     public void delete(Long id) {
         try{
+
+            Place p = getPlaceById(id);
+            if(p.getEvents().size() > 0){
+                throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED, "This place has already been used by an event!");
+            }
+
             placeRepository.deleteById(id);
         }
         catch(EmptyResultDataAccessException e){
