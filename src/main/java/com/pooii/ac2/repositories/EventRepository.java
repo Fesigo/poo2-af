@@ -21,7 +21,4 @@ public interface EventRepository extends JpaRepository <Event, Long> {
     )
     public Page<Event> find(Pageable pageRequest, String name, String description, LocalDate startDate);
 
-    /*@Query("SELECT e.tickets FROM Event e WHERE e.id = :id")
-    public Page<Ticket> findTickets(Pageable pageRequest, Long id);*/
-
 }

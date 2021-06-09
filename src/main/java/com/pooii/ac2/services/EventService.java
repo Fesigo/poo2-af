@@ -262,9 +262,6 @@ public class EventService {
         e.addTicket(t);
         e = eventRepository.save(e);
 
-        if(a.getBalance() >= e.getPriceTicket()){
-            a.setBalance(a.getBalance() - e.getPriceTicket());
-        }
         a.addTickets(t);
         a = attendRepository.save(a);
 

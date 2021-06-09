@@ -99,26 +99,6 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
-    // WIP
-    /*
-    @GetMapping("/{idEvent}/tickets")
-    public ResponseEntity<Page<Ticket>> getTickets(
-
-        @RequestParam(value = "page", defaultValue = "0") Integer page,
-        @RequestParam(value = "linesPerPage", defaultValue = "6") Integer linesPerPage,
-        @RequestParam(value = "direction", defaultValue = "ASC") String direction,
-        @RequestParam(value = "orderBy", defaultValue = "id") String orderBy,
-        @PathVariable Long idEvent
-
-    ){
-
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-
-        Page<Ticket> tickets = service.getTickets(pageRequest, idEvent);
-        return ResponseEntity.ok(tickets);
-
-    }*/
-
     @GetMapping("/{idEvent}/tickets")
     public ResponseEntity<TicketGetDTO> getTickets(@PathVariable Long idEvent){
 
